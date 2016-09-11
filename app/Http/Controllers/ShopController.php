@@ -61,6 +61,7 @@ class ShopController extends Controller
     public function addAddress()
     {
         $url = env('API_AUTH_URL').'authorize?client_id='.env('CLIENT_ID').'&redirect_uri='.env('CLIENT_RETURN_URL').'&response_type=code';
+
         return view('account.address-add')->with('url', $url);
     }
 
