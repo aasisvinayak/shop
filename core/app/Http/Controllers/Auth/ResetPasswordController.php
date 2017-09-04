@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
-class PasswordController extends Controller
+class ResetPasswordController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -21,19 +21,15 @@ class PasswordController extends Controller
     use ResetsPasswords;
 
     /**
-     * Create a new password controller instance.
+     * Where to redirect users after resetting their password.
      *
-     * @return void
+     * @var string
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'email'                => 'required|email|max:255|unique:users',
-            'password'             => 'required|min:6|confirmed',
-            'g-recaptcha-response' => 'required|recaptcha',
-        ]);
-    }
+    protected $redirectTo = '/home';
 
+    /**
+     * Create a new controller instance.
+     */
     public function __construct()
     {
         $this->middleware('guest');

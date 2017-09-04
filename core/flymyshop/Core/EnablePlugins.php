@@ -30,7 +30,7 @@ class EnablePlugins
                     $hookContainer->setHook(['i_order_hook' => $reflector->getName()]);
                 }
             }
-            $main->invoke(''); //invoke main() method
+            $main->invoke(null); //invoke main() method
         }
     }
 }

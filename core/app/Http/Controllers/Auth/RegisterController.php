@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
-use Auth;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Request;
-use Socialite;
 use Validator;
 
-class AuthController extends Controller
+class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +22,7 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesUsers, RegistersUsers, ThrottlesLogins;
 
     /**
      * Where to redirect users after login / registration.
@@ -35,12 +33,10 @@ class AuthController extends Controller
 
     /**
      * Create a new authentication controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->middleware('guest');
     }
 
     /**
@@ -86,61 +82,6 @@ class AuthController extends Controller
         return User::create([
             'email'    => $data['email'],
             'password' => bcrypt($data['password']),
-        ]);
-    }
-
-    protected $redirectPath = '/home';
-
-    /**
-     * Redirect the user to the Facebook authentication page.
-     *
-     * @return Response
-     */
-    public function redirectToProvider()
-    {
-        return Socialite::driver('facebook')->redirect();
-    }
-
-    /**
-     * Obtain the user information from Facebook.
-     *
-     * @return Response
-     */
-    public function handleProviderCallback()
-    {
-        try {
-            $user = Socialite::driver('facebook')->scopes(['email'])->user();
-        } catch (Exception $e) {
-            return redirect('auth/facebook');
-        }
-
-        $authUser = $this->findOrCreateUser($user);
-
-        Auth::login($authUser, true);
-
-        return redirect('/');
-    }
-
-    /**
-     * Return user if exists; create and return if doesn't.
-     *
-     * @param $facebookUser
-     *
-     * @return User
-     */
-    private function findOrCreateUser($facebookUser)
-    {
-        $authUser = User::where('facebook_id', $facebookUser->id)->first();
-
-        if ($authUser) {
-            return $authUser;
-        }
-
-        return User::create([
-            'name'        => $facebookUser->name,
-            'email'       => $facebookUser->email,
-            'facebook_id' => $facebookUser->id,
-            'avatar'      => $facebookUser->avatar,
         ]);
     }
 }

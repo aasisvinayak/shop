@@ -15,7 +15,6 @@ bootstrap/cache/compiled.php
 
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
-composer.lock
 /vendor
 /node_modules
 /public/storage

@@ -68,7 +68,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories_list = Category::lists('title', 'category_id');
+        $categories_list = Category::pluck('title', 'category_id');
 
         return view('admin/add-product', compact('categories_list'));
     }
@@ -201,7 +201,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findorFail($id);
-        $categories_list = Category::lists('title', 'category_id');
+        $categories_list = Category::pluck('title', 'category_id');
 
         return view('admin.edit-product', compact('product', 'categories_list'));
     }
